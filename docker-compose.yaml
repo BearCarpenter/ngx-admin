@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  ngx-admin-cntr:
+    container_name: ngx-admin-cntr
+    build: .
+    ports:
+      - "4300:4200"
+    volumes:
+      - .:/app
+    # entrypoint: /bin/bash
+    # command: "-c 'sleep 3600'"
+    networks:
+      - ngx-admin-network
+
+networks:
+  ngx-admin-network:
+    driver: bridge
