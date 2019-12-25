@@ -2,40 +2,55 @@
 
 [Who uses ngx-admin?](https://github.com/akveo/ngx-admin/issues/1645)| [Documentation](https://akveo.github.io/ngx-admin/?utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=themes) | [Installation Guidelines](https://akveo.github.io/ngx-admin/docs/getting-started/what-is-ngxadmin?utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=themes)
 
-# Admin template based on Angular 8+ and <a href="https://github.com/akveo/nebular">Nebular</a>
-<a target="_blank" href="http://akveo.com/ngx-admin/pages/dashboard?theme=corporate&utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=main_pic"><img src="https://i.imgur.com/mFdqvgG.png"/></a>
+-------------------------
+## Work with teach-app
 
-### Backend Integration Bundles
-Easy way to integrate ngx-admin with .NET, Node.js, Java or PHP. [Checkout our Store](https://store.akveo.com/?utm_source=github&utm_medium=ngx_admin_readme) for ready to use Backend Bundles.
+Niniejszy branch został utworzony w celu uniezależnienia środowiska hosta od środowiska wymaganego przez aplikację. Dzieje się to za pośrednictwem konteneryzacji aplikacji. Do odpalenia aplikacji potrzebny jest docker. Skupiono się na dwóch branchach dostępnych w open sourcowym templacie ngx-admin. Te branche to: 
+- master - zawierający aplikację z wieloma komponentami i ich przykładowym wykorzystaniem - wychodzi z niego branch feature/docker-master z niezbędnymi plikami do odpalania w środowisku zkonteneryzowanym
+- starter - zawierający czysty template do którego można dokładać dowolne komponenty - wychodzi z niego branch feature/docker-starter z niezbędnymi plikami do odpalania w środowisku zkonteneryzowanym
 
+W zdalnym repozytorium dockerowym znajdują się obrazy posiadające pobrane node_modules, które następnie służą do uruchamiania kontenera na twoim komputerze.
+W zdalnym repozytorium znajdują się:
+- jojons/ngx-admin-modules:starter - dla packages z brancha starter z repozytorium ngx-admin
+- jojons/ngx-admin-modules:master - dla packages z brancha master z repozytorium ngx-admin
 
-### With 3 stunning visual themes
+### Odpalenie aplikacji
+W celu odpalenia aplikacji w linii komend w folderze z aplikacją należy wykonać:
+```
+docker-compose up
+# W rożnych sytuacjach może być zasadne użycie flagi --build
+```
+plik docker-compose.yaml uruchamia kontener który posiada już pobrane node_modules w katalogu poza aplikacją. Sam kod aplikacji jest podmontowany do kontenera dzięki czemu można dokonywać zmian w kodzie z pominięciem środowiska aplikacji. Po odpaleniu kontenera w katalogu z aplikacją pojawi się link/skrót który wewnątrz kontenera odwołuje się do prawdziwego folderu node_modules. 
+Aplikacja jest hostowana na porcie 4300.
 
+### Praca developerska
+Praca developerska odbywa się poprzez podłączenie vscode do środka kontenera. Jest to wymagane ponieważ na systemie hosta nie istnieje katalog node_modules przez co programowanie w vscode jest prawie nie możliwe (podkreśla na czerwono większość importów z node_modules a co za tym idzie również kod).
 
+W celu developowania należy:
+1. zainstalować dodatek do vscode o nazwie 'Remote Development'
+2. Odpalić kontener
+3. Kliknąć na zielony przycisk w lewym dolnym i z opcji wybrać 'Attach to Runinng Container'
 
-#### Default
-<a target="_blank" href="http://akveo.com/ngx-admin/pages/dashboard?theme=default&utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=themes"><img src="https://i.imgur.com/Kn3xDKQ.png"/></a>
+To powinno odpalić nową instancję vscode podłączoną do uruchomionego kontenera
 
-#### Dark
-<a target="_blank" href="http://akveo.com/ngx-admin/pages/dashboard?theme=dark&utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=themes"><img src="https://i.imgur.com/FAn5iXY.png"/></a>
+### Aktualizowanie package.json i node_modules
+Odpalenie kontenera z aplikacją oparte jest o wcześniejsze przekopiowanie folderu node_modules z obrazu kontenera który już zawiera pobrane paczki. Dodanie nowego wpisu np z kolejną biblioteką do package.json nie spowoduje tego że będzie ona dostępna w kontenerze z aplikacją ponieważ w obrazie przechowującym node_modules nie zostały one zaktualiowane.
+Jeśli chcesz zaaktualizować node_modules musisz zaktualizować obraz przechowujący node_modules, a więc powinieneś:
+1. wyłączyć działający kontener z aplikacją.
+2. zaktualizować package.json o wpisy które chcesz zmienić.
+3. wykonać w linii komend:
+```
+docker build -t jojons/ngx-admin-modules:[master/starter] -f Dockerfile.ngx-admin-modules . 
+```
+spowoduje to zbudowanie obrazu z nowymi zaktualizowanymi node_modules, które w przyszłości będą przekopiowane w momencie odpalania kontenera z aplikacją.
 
-#### Cosmic
-<a target="_blank" href="http://akveo.com/ngx-admin/pages/dashboard?theme=cosmic&utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=themes"><img src="https://i.imgur.com/iJu2YDF.png"/></a>
+4. wypchnąć ten obraz na zdalne repozytorium dockera:
+```
+docker push jojons/ngx-admin-modules:[master/starter]
+```
+5. odpalić ponownie kontener
 
-#### Corporate
-<a target="_blank" href="http://akveo.com/ngx-admin/pages/dashboard?theme=corporate&utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=themes"><img src="https://i.imgur.com/GpUt6NW.png"/></a>
-
-### What's included:
-
-- Angular 8+ & Typescript
-- Bootstrap 4+ & SCSS
-- Responsive layout
-- RTL support
-- High resolution
-- Flexibly configurable themes with **hot-reload** (3 themes included)
-- Authentication module with multiple providers
-- 40+ Angular Components
-- 60+ Usage Examples
+----------------------
 
 ### Demo
 
@@ -56,16 +71,3 @@ This project runs its tests on multiple desktop and mobile browsers using [Brows
 
 - [Eva Icons](https://github.com/akveo/eva-icons) - 480+ beautiful Open Source icons
 - [Nebular](https://github.com/akveo/nebular) - Angular Components, Auth and Security
-
-### How can I support developers?
-- Star our GitHub repo :star:
-- Create pull requests, submit bugs, suggest new features or documentation updates :wrench:
-- Follow us on [Twitter](https://twitter.com/akveo_inc) :feet:
-- Like our page on [Facebook](https://www.facebook.com/akveo/) :thumbsup:
-
-### Looking for engineering services? 
-Visit [our homepage](http://akveo.com/) or simply leave us a message to [contact@akveo.com](mailto:contact@akveo.com). We will be happy to work with you!
-
-### From Developers
-Made with :heart: by [Akveo team](http://akveo.com/). Follow us on [Twitter](https://twitter.com/akveo_inc) to get the latest news first!
-We're always happy to receive your feedback!
