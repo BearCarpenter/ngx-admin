@@ -1,0 +1,6 @@
+# docker build -t jojons/ngx-admin-modules:starter -f Dockerfile.ngx-admin-modules .
+FROM node:10.18.0-buster AS deps
+WORKDIR /deps
+COPY ./package.json .
+RUN npm i -g npm@latest && npm install
+# last works withnpm 6.13.4
