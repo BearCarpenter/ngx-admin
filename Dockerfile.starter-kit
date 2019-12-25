@@ -1,0 +1,14 @@
+FROM jojons/ngx-admin-node-modules-starter-kit:4.0.1.0
+
+EXPOSE 4200
+
+VOLUME /app
+
+WORKDIR /app
+
+# RUN ln -sf /deps/node_modules . \
+# && cp /deps/package-lock.json .
+
+ENTRYPOINT [ "npm", "run"]
+
+CMD [ "self-host" ]

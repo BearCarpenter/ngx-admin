@@ -1,7 +1,24 @@
-# ngx-admin [<img src="https://i.imgur.com/oMcxwZ0.png" alt="Eva Design System" height="20px" />](https://eva.design) [![Build Status](https://travis-ci.org/akveo/ngx-admin.svg?branch=master)](https://travis-ci.org/akveo/ngx-admin) [![Dependency Status](https://david-dm.org/akveo/ngx-admin/status.svg)](https://david-dm.org/akveo/ng2-admin)
-
-[Who uses ngx-admin?](https://github.com/akveo/ngx-admin/issues/1645)| [Documentation](https://akveo.github.io/ngx-admin/?utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=themes) | [Installation Guidelines](https://akveo.github.io/ngx-admin/docs/getting-started/what-is-ngxadmin?utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=themes)
-
+-------------------------
+## Budowanie obrazów
+ustaw się na branchu master, starter-kit albo demo
+i wykonaj:
+```
+docker build -t jojons/ngx-admin-node-modules-[master/demo/starter-kit]:[wersja na przykład:4.0.1.0] -f Dockerfile.ngx-admin-node-modules .
+```
+zmień wersję w pliku Dockerfile.[master/demo/starter-kit]
+```
+docker build -t teach-app-npm-executor-[master/demo/starter-kit]:[wersja na przykład:4.0.1.0] -f Dockerfile.[master/demo/starter-kit] .
+```
+następnie sprawdź czy aplikacja działa:
+```
+docker run --rm -it -p 4200:4200 -v ${PWD}:/app --name teach-app-angular teach-app-npm-executor-[master/demo/starter-kit]:[wersja na przykład:4.0.1.0]
+```
+jeśli działa to wypuszuj obraz zawierający node_modules:
+```
+docker push jojons/ngx-admin-node-modules-[master/demo/starter-kit]:[wersja na przykład:4.0.1.0]
+docker image tag jojons/ngx-admin-node-modules-starter-kit:4.0.1.0 jojons/ngx-admin-node-modules-starter-kit:latest
+docker push jojons/ngx-admin-node-modules-starter-kit:latest
+```
 -------------------------
 ## Work with teach-app
 
@@ -53,6 +70,11 @@ docker push jojons/ngx-admin-modules:[master/starter]
 ----------------------
 
 ### Demo
+
+# ngx-admin [<img src="https://i.imgur.com/oMcxwZ0.png" alt="Eva Design System" height="20px" />](https://eva.design) [![Build Status](https://travis-ci.org/akveo/ngx-admin.svg?branch=master)](https://travis-ci.org/akveo/ngx-admin) [![Dependency Status](https://david-dm.org/akveo/ngx-admin/status.svg)](https://david-dm.org/akveo/ng2-admin)
+
+[Who uses ngx-admin?](https://github.com/akveo/ngx-admin/issues/1645)| [Documentation](https://akveo.github.io/ngx-admin/?utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=themes) | [Installation Guidelines](https://akveo.github.io/ngx-admin/docs/getting-started/what-is-ngxadmin?utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=themes)
+
 
 <a target="_blank" href="http://akveo.com/ngx-admin/">Live Demo</a>
 
